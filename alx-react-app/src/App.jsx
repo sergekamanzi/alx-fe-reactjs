@@ -3,13 +3,13 @@ import Header from './Header';
 import MainContent from './MainContent';
 import Footer from './Footer';
 import UserProfile from './components/UserProfile';
-
+import WelcomeMessage from './components/WelcomeMessage';
 function App() {
   return (
     <div>
       <Header />
       <MainContent />
-
+      <WelcomeMessage />
       <h1>User Profiles</h1>
       <UserProfile 
         name="Alice" 
