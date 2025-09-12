@@ -4,6 +4,8 @@ const useRecipeStore = create((set, get) => ({
   recipes: [],
   searchTerm: '',
   filteredRecipes: [],
+  favorites: [],
+  recommendations: [],
   
   // Recipe management actions
   addRecipe: (newRecipe) => set((state) => ({ 
@@ -28,7 +30,34 @@ const useRecipeStore = create((set, get) => ({
       recipe.description.toLowerCase().includes(searchTerm.toLowerCase())
     )
     set({ filteredRecipes: filtered })
-  }
+  },
+  
+  // Favorites actions
+  addFavorite: (recipeId) => set((state) => ({ 
+    favorites: [...state.favorites, recipeId] 
+  })),
+  removeFavorite: (recipeId) => set((state) => ({
+    favorites: state.favorites.filter(id => id !== recipeId)
+  })),
+  
+  // Recommendations action
+  generateRecommendations: () => set((state) => {
+    // Simple recommendation logic based on favorites
+    // If user has favorites, recommend similar recipes (mocked here)
+    if (state.favorites.length > 0) {
+      const recommended = state.recipes.filter(recipe =>
+        !state.favorites.includes(recipe.id) && Math.random() > 0.7
+      ).slice(0, 3); // Limit to 3 recommendations
+      return { recommendations: recommended };
+    }
+    
+    // If no favorites, show random recommendations
+    const randomRecommendations = state.recipes.length > 3
+      ? [...state.recipes].sort(() => 0.5 - Math.random()).slice(0, 3)
+      : state.recipes;
+    
+    return { recommendations: randomRecommendations };
+  })
 }))
 
 export default useRecipeStore
