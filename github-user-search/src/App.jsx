@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import SearchUser from "./components/SearchUser";
+import Search from "./components/Search";
 import { fetchUserData } from "./services/githubService";
 
 function App() {
@@ -25,7 +25,7 @@ function App() {
   return (
     <div style={{ padding: "2rem" }}>
       <h1>GitHub User Search</h1>
-      <SearchUser onSearch={handleSearch} />
+      <Search onSearch={handleSearch} />
 
       {loading && <p>Loading...</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
