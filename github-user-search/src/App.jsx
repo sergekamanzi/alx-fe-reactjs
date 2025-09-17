@@ -1,17 +1,24 @@
 import React, { useState } from "react";
 import SearchUser from "./components/SearchUser";
-import { getUser } from "./services/github";
+import { fetchUserData } from "./services/githubService";
 
 function App() {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleSearch = async (username) => {
+    setLoading(true);
+    setError("");
+    setUser(null);
+
     try {
-      const data = await getUser(username);
+      const data = await fetchUserData(username);
       setUser(data);
-    } catch (error) {
-      console.error("User not found", error);
-      setUser(null);
+    } catch (err) {
+      setError("Looks like we can't find the user");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -20,11 +27,13 @@ function App() {
       <h1>GitHub User Search</h1>
       <SearchUser onSearch={handleSearch} />
 
+      {loading && <p>Loading...</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
       {user && (
         <div style={{ marginTop: "1rem" }}>
           <img src={user.avatar_url} alt={user.login} width={100} />
           <h2>{user.name || user.login}</h2>
-          <p>{user.bio}</p>
+          <p>{user.bio || "No bio available"}</p>
           <a href={user.html_url} target="_blank" rel="noopener noreferrer">
             View Profile
           </a>
