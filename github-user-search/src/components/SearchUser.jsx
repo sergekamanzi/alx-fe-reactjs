@@ -7,6 +7,7 @@ function SearchUser({ onSearch }) {
     e.preventDefault();
     if (username.trim()) {
       onSearch(username);
+      setUsername("");
     }
   };
 
